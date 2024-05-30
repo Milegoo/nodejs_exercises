@@ -1,1 +1,1 @@
-# nodejs_exercises
+# NODEJS Exercises from STW
