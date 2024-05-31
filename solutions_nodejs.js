@@ -1,5 +1,7 @@
 //Eloi Milego Miralles
 
+const fs = require('fs') //file system
+
 //P1
 const f1 = (a) => {
     console.log(a);
@@ -59,7 +61,6 @@ console.printaki2()*/
 
 //P8
 
-const fs = require('fs')
 
 const f6 = (list, finalCallback) => {
     fileContents = []
@@ -154,8 +155,179 @@ const asyncMap = function(list, f, callback2) {
     })
 }
 
-asyncMap(['a1.txt', 'a2.txt'], fs.readFile, (a,b)=>console.log(`error: ${a} data:${b}`))
+//asyncMap(['a1.txt', 'a2.txt'], fs.readFile, (a,b)=>console.log(`error: ${a} data:${b}`))
 //asyncMap(['a1.txt', 'a2.txt', 'notExists1.txt', 'notExists2.txt'], fs.readFile, (a,b)=>console.log(`error: ${a} data:${b}`))
 
 //P12
+
+let o1 = {
+    counter: 0,
+    
+    //we can't do it with arrows (dictionary does not define a this)
+    inc: function()  {
+        this.counter++;
+        if(this.notify) {
+            this.notify()
+        }
+    },
+
+    notify: null,
+}
+
+//o1.notify = null; 
+//o1.counter = 1; 
+//o1.notify = function() { console.log("notified") }; 
+//o1.inc()
+
+//P12+
+
+let o1extra = {
+    counter: 0,
+    
+    inc: function()  {
+        this.counter++;
+        if(this.notify) {
+            this.notify(this.counter)
+        }
+    },
+
+    notify: null,
+}
+
+//o1extra.counter = 1; 
+//o1extra.notify = function(a) { console.log(a) }; 
+//o1extra.inc()
+
+//P13
+
+let o2 = (function () {
+    let count = 1
+    let notify = null
+    return {
+        inc: function () { 
+            count++
+            if(notify) {
+                notify(count)
+            } 
+        },
+        count: function () { return count },
+        setNotify: function(f) {
+            notify = f;
+        }
+    }
+})();
+
+//o2.setNotify(function(a) {console.log(a)});
+//o2.inc()
+
+//P14
+
+let Counter = function () { //constructor (CAN'T BE AN ARROW)
+    this.a = 1
+    this.inc = function () { //We could use arrow too in classes 
+        this.a++ 
+        if(this.notify) {
+            this.notify(this.a)
+        }
+    }
+    this.count = function() { return this.a }
+    this.notify = null
+    this.setNotify = function(f) {
+        this.notify = f
+    }
+}
+
+//With the class we can create multiple instances while the module pattern is a unique object with private variables.
+
+//let o3 = new Counter()
+//o3.setNotify(function (a) { console.log(a) }); 
+//o3.inc()
+
+//P14+
+
+let Counterextra = function () { 
+    let a = 1 //private
+    let notify = null //private
+    let count = function() { return a } //private
+
+    this.inc = function () { //public
+        a++ 
+        if(notify) {
+            notify(a)
+        }
+    }
+    this.setNotify = function(f) { //public
+        notify = f
+    }
+}
+
+//let o3extra = new Counter()
+//o3extra.setNotify(function (a) { console.log(a) }); 
+//o3extra.inc()
+
+//P15
+
+let DecreasingCounter = function() {
+    Counter.call(this)
+
+    this.inc = function() {
+        this.a--
+        if(this.notify) {
+            this.notify(this.a)
+        }
+    }
+}
+
+DecreasingCounter.prototype = Object.create(Counter.prototype) //Create a Counter Prototype Object so DecreasingCounter can inherit its propertries.
+DecreasingCounter.prototype.constructor = DecreasingCounter;
+
+//let o4 = new DecreasingCounter()
+//o4.setNotify(function (a) { console.log(a) }); 
+//o4.inc()
+
+
+//P16
+
+const readIntoFuture = function(filename) {
+    let future = {isDone: false, result: null}
+
+    fs.readFile(filename, 'utf8', (error, data) => {
+        future.isDone = true
+        if(!error) {
+            future.result = data
+        }
+    })
+
+    return future
+}
+
+//future = readIntoFuture('a1.txt'); 
+//console.log(future)
+//setTimeout(function() { console.log(future) }, 1000)
+
+//P17
+
+const asyncToFuture = function(f) {
+    return (filename) => {
+
+        let future = { isDone: false, result: null }
+
+        f(filename, 'utf8', (error, data) => {
+            future.isDone = true
+            if (!error) {
+                future.result = data
+            }
+        })
+
+        return future
+
+    }
+}
+
+//readIntoFuture2 = asyncToFuture(fs.readFile);
+//future2a = readIntoFuture2('a1.txt');
+//setTimeout(function() { console.log(future2a) }, 1000)
+
+
+//P18
 
