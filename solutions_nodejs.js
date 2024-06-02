@@ -331,3 +331,54 @@ const asyncToFuture = function(f) {
 
 //P18
 
+
+const asyncToEnhancedFuture = function(f) {
+    
+
+    return (filename) => {
+
+        enhancedFuture = { isDone: false, result: null, notify: null, 
+            registerCallback: function(cb) {
+                this.notify = cb
+                if (this.isDone) {
+                    this.notify(this);
+                }
+            }}
+
+        f(filename, (error, data) => {
+            enhancedFuture.isDone = true
+            if (!error) {
+                enhancedFuture.result = data
+            }
+            if(enhancedFuture.notify) {
+                enhancedFuture.notify(enhancedFuture)
+            }
+        })
+
+        return enhancedFuture
+
+    }
+
+}
+
+//const utfReadFile = (f, c) => fs.readFile(f, 'utf-8', c);
+//const readIntoEnhancedFuture = asyncToEnhancedFuture(utfReadFile);
+//enhancedFuture = readIntoEnhancedFuture('a1.txt');
+//enhancedFuture.registerCallback( function(ef) {console.log(ef) } )
+
+//P19
+
+const when = function(f1) {
+    return { do: function(f2) {
+        f1(f2)
+    }}
+}
+
+
+//func1 = function(callback) { fs.readFile('a1.txt', 'utf-8', callback) }
+//func2 = function(error, result) { console.log(result) }
+////func1(func2)
+//console.log(when(func1).do(func2)); 
+
+//P20
+
