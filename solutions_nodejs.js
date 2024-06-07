@@ -10,7 +10,7 @@ const f1 = (a) => {
 //f1("Hola")
 
 //P2
-const f2 = (a) => (a >= 0) ?  a*2 : -1
+const f2 = (a) => (a >= 0) ? a * 2 : -1
 
 //console.log(f2(-1));
 
@@ -29,16 +29,16 @@ console.printaki = () => console.log("aqui");
 
 //P5
 
-const f4 = (a,b) => a + b
+const f4 = (a, b) => a + b
 
-llistaA = [1,2,3,4]
+llistaA = [1, 2, 3, 4]
 llistaB = llistaA.map(x => f4(x, 23))
 
 //console.log(llistaB);
 
 //P6 
 
-const f5 = (a,b,c) => {
+const f5 = (a, b, c) => {
     //a: object, b and c: functions
     c(b(a))
 }
@@ -47,7 +47,7 @@ const f5 = (a,b,c) => {
 
 //P7
 
-const outerF = function() {
+const outerF = function () {
     let counter = 1;
     return () => console.log(`aqui ${counter++}`);
 }
@@ -64,11 +64,11 @@ console.printaki2()*/
 
 const f6 = (list, finalCallback) => {
     fileContents = []
-    list.forEach( element => {
+    list.forEach(element => {
         fs.readFile(element, 'utf8', (error, data) => {
-            if(!error) {
+            if (!error) {
                 fileContents.push(data)
-                if(list.length == fileContents.length) {
+                if (list.length == fileContents.length) {
                     finalCallback(fileContents)
                 }
             }
@@ -85,12 +85,12 @@ const f6 = (list, finalCallback) => {
 const f7 = (list, finalCallback) => {
     fileContents = []
     filesReadCounter = 0
-    list.forEach( (element, index) => {
+    list.forEach((element, index) => {
         fs.readFile(element, 'utf8', (error, data) => {
-            if(!error) {
+            if (!error) {
                 fileContents[index] = data
                 filesReadCounter++
-                if(list.length == filesReadCounter) { //We need a counter because filesContent.length can be equal to list.length but still need to read (empty list positions)
+                if (list.length == filesReadCounter) { //We need a counter because filesContent.length can be equal to list.length but still need to read (empty list positions)
                     finalCallback(fileContents)
                 }
             }
@@ -106,12 +106,12 @@ const f7extra = (list, finalCallback) => {
     fileContents = []
     filesReadCounter = 0
     index = 0
-    list.forEach( (element) => {
+    list.forEach((element) => {
         fs.readFile(element, 'utf8', (error, data) => {
-            if(!error) {
+            if (!error) {
                 fileContents[index] = data
                 filesReadCounter++
-                if(list.length == filesReadCounter) { //We need a counter because filesContent.length can be equal to list.length but still need to read (empty list positions)
+                if (list.length == filesReadCounter) { //We need a counter because filesContent.length can be equal to list.length but still need to read (empty list positions)
                     finalCallback(fileContents)
                 }
             }
@@ -127,7 +127,7 @@ const f7extra = (list, finalCallback) => {
 
 //P11
 
-const asyncMap = function(list, f, callback2) {
+const asyncMap = function (list, f, callback2) {
     //function callback2(err, resultList) {...}
     //function f(a, callback1) {...} -> Same as fs.readFile function
     //function callback1(err, result) {...}
@@ -136,7 +136,7 @@ const asyncMap = function(list, f, callback2) {
     filesReadCounter = 0
     firstError = false //We only want to print the first error
 
-    list.forEach( (element, index) => {
+    list.forEach((element, index) => {
         f(element, (error, data) => {
             if (!error) {
                 resultList[index] = data.toString()
@@ -146,7 +146,7 @@ const asyncMap = function(list, f, callback2) {
                 }
             }
             else {
-                if(!firstError) {
+                if (!firstError) {
                     firstError = true
                     callback2(error, resultList)
                 }
@@ -162,11 +162,11 @@ const asyncMap = function(list, f, callback2) {
 
 let o1 = {
     counter: 0,
-    
+
     //we can't do it with arrows (dictionary does not define a this)
-    inc: function()  {
+    inc: function () {
         this.counter++;
-        if(this.notify) {
+        if (this.notify) {
             this.notify()
         }
     },
@@ -183,10 +183,10 @@ let o1 = {
 
 let o1extra = {
     counter: 0,
-    
-    inc: function()  {
+
+    inc: function () {
         this.counter++;
-        if(this.notify) {
+        if (this.notify) {
             this.notify(this.counter)
         }
     },
@@ -204,14 +204,14 @@ let o2 = (function () {
     let count = 1
     let notify = null
     return {
-        inc: function () { 
+        inc: function () {
             count++
-            if(notify) {
+            if (notify) {
                 notify(count)
-            } 
+            }
         },
         count: function () { return count },
-        setNotify: function(f) {
+        setNotify: function (f) {
             notify = f;
         }
     }
@@ -225,14 +225,14 @@ let o2 = (function () {
 let Counter = function () { //constructor (CAN'T BE AN ARROW)
     this.a = 1
     this.inc = function () { //We could use arrow too in classes 
-        this.a++ 
-        if(this.notify) {
+        this.a++
+        if (this.notify) {
             this.notify(this.a)
         }
     }
-    this.count = function() { return this.a }
+    this.count = function () { return this.a }
     this.notify = null
-    this.setNotify = function(f) {
+    this.setNotify = function (f) {
         this.notify = f
     }
 }
@@ -245,18 +245,18 @@ let Counter = function () { //constructor (CAN'T BE AN ARROW)
 
 //P14+
 
-let Counterextra = function () { 
+let Counterextra = function () {
     let a = 1 //private
     let notify = null //private
-    let count = function() { return a } //private
+    let count = function () { return a } //private
 
     this.inc = function () { //public
-        a++ 
-        if(notify) {
+        a++
+        if (notify) {
             notify(a)
         }
     }
-    this.setNotify = function(f) { //public
+    this.setNotify = function (f) { //public
         notify = f
     }
 }
@@ -267,12 +267,12 @@ let Counterextra = function () {
 
 //P15
 
-let DecreasingCounter = function() {
+let DecreasingCounter = function () {
     Counter.call(this)
 
-    this.inc = function() {
+    this.inc = function () {
         this.a--
-        if(this.notify) {
+        if (this.notify) {
             this.notify(this.a)
         }
     }
@@ -288,12 +288,12 @@ DecreasingCounter.prototype.constructor = DecreasingCounter;
 
 //P16
 
-const readIntoFuture = function(filename) {
-    let future = {isDone: false, result: null}
+const readIntoFuture = function (filename) {
+    let future = { isDone: false, result: null }
 
     fs.readFile(filename, 'utf8', (error, data) => {
         future.isDone = true
-        if(!error) {
+        if (!error) {
             future.result = data
         }
     })
@@ -307,7 +307,7 @@ const readIntoFuture = function(filename) {
 
 //P17
 
-const asyncToFuture = function(f) {
+const asyncToFuture = function (f) {
     return (filename) => {
 
         let future = { isDone: false, result: null }
@@ -332,24 +332,26 @@ const asyncToFuture = function(f) {
 //P18
 
 
-const asyncToEnhancedFuture = function(f) {
+const asyncToEnhancedFuture = function (f) {
 
     return (filename) => {
 
-        const enhancedFuture = { isDone: false, result: null, notify: null, 
-            registerCallback: function(cb) {
+        const enhancedFuture = {
+            isDone: false, result: null, notify: null,
+            registerCallback: function (cb) {
                 this.notify = cb
                 if (this.isDone) {
                     this.notify(this);
                 }
-            }}
+            }
+        }
 
         f(filename, (error, data) => {
             enhancedFuture.isDone = true
             if (!error) {
                 enhancedFuture.result = data
             }
-            if(enhancedFuture.notify) {
+            if (enhancedFuture.notify) {
                 enhancedFuture.notify(enhancedFuture)
             }
         })
@@ -367,10 +369,12 @@ const asyncToEnhancedFuture = function(f) {
 
 //P19
 
-const when = function(f1) {
-    return { do: function(f2) {
-        f1(f2)
-    }}
+const when = function (f1) {
+    return {
+        do: function (f2) {
+            f1(f2)
+        }
+    }
 }
 
 
@@ -381,11 +385,11 @@ const when = function(f1) {
 
 //P20
 
-const when2 = function(f1) {
-    return { 
-        and: function(f2) {
+const when2 = function (f1) {
+    return {
+        and: function (f2) {
             return {
-                do: function(f3) {
+                do: function (f3) {
                     let isf1Done = false
                     let isf2Done = false
                     let error1 = null
@@ -414,7 +418,7 @@ const when2 = function(f1) {
             }
 
         }
-        
+
     }
 }
 
@@ -425,7 +429,7 @@ const when2 = function(f1) {
 
 //P20+
 
-const when2extra = function(f1) {
+const when2extra = function (f1) {
 
     let err1 = false
     let res1 = false
@@ -437,8 +441,8 @@ const when2extra = function(f1) {
         isf1Done = true
     })
 
-    return { 
-        and: function(f2) {
+    return {
+        and: function (f2) {
             let err2 = false
             let res2 = false
             let isf2Done = false
@@ -450,15 +454,15 @@ const when2extra = function(f1) {
             })
 
             return {
-                do: function(f3) {
-                    if(isf1Done && isf2Done) {
+                do: function (f3) {
+                    if (isf1Done && isf2Done) {
                         f3(err1, err2, res1, res2)
                     }
                 }
             }
 
         }
-        
+
     }
 }
 
@@ -490,7 +494,7 @@ const composer = (f1, f2) => {
 const asyncComposer = (f1, f2) => {
     return (a, callback) => {
         f2(a, (err2, res2) => {
-            if(err2) {
+            if (err2) {
                 callback(err2, res2)
             }
             else {
@@ -564,7 +568,7 @@ const antipromise = (p) => {
 //P25
 
 const promiseToCallback = (f) => {
-    return g = function(x, callback) { //callback(err, res)
+    return g = function (x, callback) { //callback(err, res)
         p = f(x)
         p.then((res) => callback(null, res)).catch((err) => callback(err, null))
     }
@@ -584,10 +588,10 @@ const isEvenCallback = promiseToCallback(isEven);
 
 //P26
 
-const readToPromise = function(file) {
+const readToPromise = function (file) {
     return new Promise((resolve, reject) => {
         fs.readFile(file, 'utf8', (err, data) => {
-            if(!err) {
+            if (!err) {
                 resolve(data)
             }
             else {
@@ -606,7 +610,7 @@ const callbackToPromise = (f) => {
     return (file) => {
         return new Promise((resolve, reject) => {
             f(file, (err, data) => {
-                if(!err) {
+                if (!err) {
                     resolve(data)
                 }
                 else {
@@ -670,26 +674,26 @@ const promiseComposer = (f1, f2) => {
 
 //P31
 
-const parallelPromise = function(p1, p2) {
+const parallelPromise = function (p1, p2) {
     return new Promise((resolve, reject) => {
         values = []
         counter = 0
 
         p1.then((x) => values[0] = x).catch((x) => values[0] = x)
-        .then(() => {
-            counter++;
-            if (counter == 2) {
-                resolve(values)
-            }
-        })
+            .then(() => {
+                counter++;
+                if (counter == 2) {
+                    resolve(values)
+                }
+            })
 
         p2.then((x) => values[1] = x).catch((x) => values[1] = x)
-        .then(() => {
-            counter++;
-            if (counter == 2) {
-                resolve(values)
-            }
-        })
+            .then(() => {
+                counter++;
+                if (counter == 2) {
+                    resolve(values)
+                }
+            })
 
     })
     // We can also use the constractor all that take an iterable of Promises and returns a Promise that resolves with an array with the values of the promises.
@@ -727,9 +731,9 @@ const promiseBarrier = (numPromises) => {
                 valuesToResolve[i] = x
                 pendingResolves[i] = resolve
                 counter++
-                if(counter === numPromises) {
+                if (counter === numPromises) {
                     for (let j = 0; j < numPromises; j++) {
-                        pendingResolves[j](valuesToResolve[j])            
+                        pendingResolves[j](valuesToResolve[j])
                     }
                 }
             })
@@ -775,14 +779,128 @@ Promise.resolve(0)
 */
 
 //TEST3 - Expected output: 1 2 
-
+/*
 let [fu1, fu2] = promiseBarrier(2);
 Promise.resolve(1).then(fu1).then(console.log)
 Promise.resolve(2).then(fu2).then(console.log)
+*/
 
 //P32+
 
 const timedPromiseBarrier = (n, t) => {
-    
+
+    let list = []
+    let valuesToResolve = []
+    let pendingResolves = []
+    let counter = 0
+    let timeout = null
+
+    for (let i = 0; i < n; i++) {
+        list[i] = ((x) => {
+            return new Promise((resolve, reject) => {
+                valuesToResolve[i] = x
+                pendingResolves[i] = resolve
+                if (counter == 0 && timeout == null) { //first function called
+                    timeout = setTimeout(() => {
+                        for (let j = 0; j < n; j++) {
+                            if (pendingResolves[j]) {
+                                pendingResolves[j](valuesToResolve[j])
+                            }
+                        }
+                    }, t)
+
+                }
+                counter++
+                if (counter === n) {
+                    for (let j = 0; j < n; j++) {
+                        pendingResolves[j](valuesToResolve[j])
+                    }
+                }
+            })
+        })
+    }
+
+    return list
 }
+
+// Should return the ones finished in a and after 5 seconds the line with the b.
+/*
+let [fu1, fu2, fu3] = timedPromiseBarrier(3, 5000);
+Promise.resolve(0)
+.then(x => { console.log("c1 s1 a"); return x; })
+.then(x => { console.log("c1 s2 a"); return x; })
+.then(x => { console.log("c1 s3 a"); return x; })
+.then(fu1)
+.then(x => { console.log("c1 s4 b"); return x; })
+*/
+
+var [fu1, fu2] = timedPromiseBarrier(2, 1500);
+Promise.resolve(0)
+  .then(fu1)
+  .then((x) => {
+    console.log("c1 s1 b");
+    return x;
+  })
+  .then((x) => {
+    console.log("c1 s2 b");
+    return x;
+  });
+setTimeout(() => {
+  Promise.resolve(0)
+    .then((x) => {
+      console.log("c2 s1 a");
+      return x;
+    })
+    .then((x) => {
+      console.log("c2 s2 a");
+      return x;
+    })
+    .then((x) => {
+      console.log("c2 s3 a");
+      return x;
+    })
+    .then((x) => {
+      console.log("c2 s4 a");
+      return x;
+    })
+    .then(fu2);
+}, 5000);
+
+//P33
+
+const PromisedPriorityQueue = function () {
+
+    let queue = []
+
+    this.decorate = function (p, priority) {
+
+        return new Promise((resolve, reject) => {
+            const prom = {promise: p, priority: priority, resolve: resolve, reject: reject}
+            queue.push(prom)
+            this.processQueue()
+        })
+    }
+
+}
+
+/*
+
+let ppq = new PromisedPriorityQueue()
+p1 = new Promise((resolve, reject)=>{
+setTimeout(()=>{resolve(1)}, 1000)
+})
+p2 = new Promise((resolve, reject)=>{
+setTimeout(()=>{resolve(2)},2000)
+})
+p3 = new Promise((resolve, reject)=>{
+setTimeout(()=>{resolve(3)},3000)
+})
+
+ppq.decorate(p1,1).then(console.log)
+ppq.decorate(p2,2).then(console.log)
+ppq.decorate(p3,3).then(console.log)
+*/
+
+
+
 
