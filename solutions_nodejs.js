@@ -833,39 +833,39 @@ Promise.resolve(0)
 .then(fu1)
 .then(x => { console.log("c1 s4 b"); return x; })
 */
-
+/*
 var [fu1, fu2] = timedPromiseBarrier(2, 1500);
 Promise.resolve(0)
-  .then(fu1)
-  .then((x) => {
-    console.log("c1 s1 b");
-    return x;
-  })
-  .then((x) => {
-    console.log("c1 s2 b");
-    return x;
-  });
+    .then(fu1)
+    .then((x) => {
+        console.log("c1 s1 b");
+        return x;
+    })
+    .then((x) => {
+        console.log("c1 s2 b");
+        return x;
+    });
 setTimeout(() => {
-  Promise.resolve(0)
-    .then((x) => {
-      console.log("c2 s1 a");
-      return x;
-    })
-    .then((x) => {
-      console.log("c2 s2 a");
-      return x;
-    })
-    .then((x) => {
-      console.log("c2 s3 a");
-      return x;
-    })
-    .then((x) => {
-      console.log("c2 s4 a");
-      return x;
-    })
-    .then(fu2);
+    Promise.resolve(0)
+        .then((x) => {
+            console.log("c2 s1 a");
+            return x;
+        })
+        .then((x) => {
+            console.log("c2 s2 a");
+            return x;
+        })
+        .then((x) => {
+            console.log("c2 s3 a");
+            return x;
+        })
+        .then((x) => {
+            console.log("c2 s4 a");
+            return x;
+        })
+        .then(fu2);
 }, 5000);
-
+*/
 //P33
 
 const PromisedPriorityQueue = function () {
@@ -875,9 +875,20 @@ const PromisedPriorityQueue = function () {
     this.decorate = function (p, priority) {
 
         return new Promise((resolve, reject) => {
-            const prom = {promise: p, priority: priority, resolve: resolve, reject: reject}
-            queue.push(prom)
-            this.processQueue()
+            const prom = { promise: p, priority: priority}
+            this.queue.push(prom)
+            
+            this.queue.sort(function (a, b) {
+                if (a.priority > b.priority) {
+                    return 1;
+                }
+                if (a.priority < b.priority) {
+                    return -1;
+                }
+                // a must be equal to b
+                return 0;
+            });
+            p.then((x) => {}) //No se com seguir, no se com fer per saber si segueix sent la més prioritària o no.
         })
     }
 
@@ -902,5 +913,5 @@ ppq.decorate(p3,3).then(console.log)
 */
 
 
-
+//P33+
 
