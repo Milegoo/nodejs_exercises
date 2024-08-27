@@ -867,34 +867,62 @@ setTimeout(() => {
 }, 5000);
 */
 //P33
-
+/*
 const PromisedPriorityQueue = function () {
 
     let queue = []
 
+    this.findMostPrioP = function() {
+        let mostPrioPObj = {}
+        let highestPrio = -1
+        queue.forEach((p, index) => {
+
+            if(p.prio > highestPrio) {
+                highestPrio = p.priority
+                mostPrioPObj.pObj = p
+                mostPrioPObj.index = index
+            }
+           
+        })
+
+        return (queue.length == 0) ? null : mostPrioPObj
+    }
+
+    this.recursiveResolve = function(currentP) {
+        let mostPrioPObj = this.findMostPrioP()
+
+        if((mostPrioPObj) && (currentP.priority >= mostPrioPObj.pObj.prio)) {
+            currentP.promise.then(res => {
+                mostPrioPObj = this.findMostPrioP()
+                if((mostPrioPObj) && (mostPrioPObj.pObj.priority > currentP.prio)) {
+                    this.recursiveResolve(mostPrioPObj.pObj)
+                }
+                else {
+                    currentP.resolver(res)
+                    queue.splice(promQ.indexOf(currentP), 1)
+
+                    if(queue.length > 0) {
+                        let nextP = this.findMostPrioP().pObj;
+                        this.recursiveResolve(nextP);
+                    }
+                }
+            })
+        }
+
+    }
+
     this.decorate = function (p, priority) {
 
         return new Promise((resolve, reject) => {
-            const prom = { promise: p, priority: priority}
-            this.queue.push(prom)
-            
-            this.queue.sort(function (a, b) {
-                if (a.priority > b.priority) {
-                    return 1;
-                }
-                if (a.priority < b.priority) {
-                    return -1;
-                }
-                // a must be equal to b
-                return 0;
-            });
-            p.then((x) => {}) //No se com seguir, no se com fer per saber si segueix sent la més prioritària o no.
+            let pObj = {promise: p, prio: priority, resolver: resolve}
+            queue[queue.length] = pObj
+            this.recursiveResolve(pObj)
         })
     }
 
 }
 
-/*
+
 
 let ppq = new PromisedPriorityQueue()
 p1 = new Promise((resolve, reject)=>{
@@ -910,8 +938,8 @@ setTimeout(()=>{resolve(3)},3000)
 ppq.decorate(p1,1).then(console.log)
 ppq.decorate(p2,2).then(console.log)
 ppq.decorate(p3,3).then(console.log)
-*/
+
 
 
 //P33+
-
+*/
